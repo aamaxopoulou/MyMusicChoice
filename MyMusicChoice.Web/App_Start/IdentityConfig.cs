@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using MyMusicChoice.Web.database;
 using MyMusicChoice.Web.Models;
 
 namespace MyMusicChoice.Web
