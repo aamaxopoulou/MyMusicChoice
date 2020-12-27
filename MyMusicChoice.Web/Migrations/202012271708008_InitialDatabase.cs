@@ -3,7 +3,7 @@ namespace MyMusicChoice.Web.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialMigration : DbMigration
+    public partial class InitialDatabase : DbMigration
     {
         public override void Up()
         {
@@ -12,8 +12,8 @@ namespace MyMusicChoice.Web.Migrations
                 c => new
                     {
                         AlbumId = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        PublicationYear = c.Int(nullable: false),
+                        Name = c.String(nullable: false),
+                        PublicationYear = c.Int(),
                         ArtistId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.AlbumId)
@@ -21,27 +21,27 @@ namespace MyMusicChoice.Web.Migrations
                 .Index(t => t.ArtistId);
             
             CreateTable(
-                "dbo.Tracks",
-                c => new
-                    {
-                        TrackId = c.Int(nullable: false, identity: true),
-                        Title = c.String(),
-                        Duration = c.Int(nullable: false),
-                        AlbumId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.TrackId)
-                .ForeignKey("dbo.Albums", t => t.AlbumId, cascadeDelete: true)
-                .Index(t => t.AlbumId);
-            
-            CreateTable(
                 "dbo.Artists",
                 c => new
                     {
                         ArtistId = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        DateOfBirth = c.DateTime(nullable: false),
+                        Name = c.String(nullable: false),
+                        DateOfBirth = c.DateTime(),
                     })
                 .PrimaryKey(t => t.ArtistId);
+            
+            CreateTable(
+                "dbo.Tracks",
+                c => new
+                    {
+                        TrackId = c.Int(nullable: false, identity: true),
+                        Title = c.String(nullable: false),
+                        Duration = c.Int(),
+                        AlbumId = c.Int(),
+                    })
+                .PrimaryKey(t => t.TrackId)
+                .ForeignKey("dbo.Albums", t => t.AlbumId)
+                .Index(t => t.AlbumId);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -119,8 +119,8 @@ namespace MyMusicChoice.Web.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Albums", "ArtistId", "dbo.Artists");
             DropForeignKey("dbo.Tracks", "AlbumId", "dbo.Albums");
+            DropForeignKey("dbo.Albums", "ArtistId", "dbo.Artists");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
@@ -134,8 +134,8 @@ namespace MyMusicChoice.Web.Migrations
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
-            DropTable("dbo.Artists");
             DropTable("dbo.Tracks");
+            DropTable("dbo.Artists");
             DropTable("dbo.Albums");
         }
     }
